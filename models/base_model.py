@@ -27,7 +27,7 @@ class BaseModel:
                 if key == "created_at" or key == "updated_at":
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 if key == "__class__":
-                    del key, value
+                    del kwargs['__class__']
             self.__dict__.update(kwargs)
 
     def __str__(self):
