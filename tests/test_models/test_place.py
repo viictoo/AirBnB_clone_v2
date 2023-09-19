@@ -8,7 +8,7 @@ import os
 class test_Place(test_basemodel):
     """ """
 
-    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+    if os.getenv('HBNB_TYPE_STORAGE') != 'db':
         def __init__(self, *args, **kwargs):
             """ """
             super().__init__(*args, **kwargs)
