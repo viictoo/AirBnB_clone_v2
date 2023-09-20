@@ -9,20 +9,18 @@ import os
 class test_City(test_basemodel):
     """test city class"""
 
-    if os.getenv('HBNB_TYPE_STORAGE') != 'db':
+    def __init__(self, *args, **kwargs):
+        """unittest method """
+        super().__init__(*args, **kwargs)
+        self.name = "City"
+        self.value = City
 
-        def __init__(self, *args, **kwargs):
-            """unittest method """
-            super().__init__(*args, **kwargs)
-            self.name = "City"
-            self.value = City
+    def test_state_id(self):
+        """unittest method  """
+        new = self.value()
+        self.assertEqual(type(new.state_id), str)
 
-        def test_state_id(self):
-            """unittest method  """
-            new = self.value()
-            self.assertEqual(type(new.state_id), str)
-
-        def test_name(self):
-            """ unittest method """
-            new = self.value()
-            self.assertEqual(type(new.name), str)
+    def test_name(self):
+        """ unittest method """
+        new = self.value()
+        self.assertEqual(type(new.name), str)
