@@ -49,6 +49,7 @@ class TestConsole(unittest.TestCase):
                 self.assertEqual(SimOut.getvalue(), '')
 
         def test_show_success(self):
+            """unittest module"""
             with patch('sys.stdout', SIO()) as SimOut:
                 # Create an instance of Place
                 self.SimIn.onecmd('create Place')
@@ -68,6 +69,7 @@ class TestConsole(unittest.TestCase):
                 self.assertIn("'updated_at': datetime.datetime", show_output)
 
         def test_show_default_success(self):
+            """test show"""
             with patch('sys.stdout', SIO()) as SimOut:
                 # Create an instance of Place
                 self.SimIn.onecmd('create Place')
@@ -85,6 +87,7 @@ class TestConsole(unittest.TestCase):
                 self.assertIn("'updated_at': datetime.datetime", show_output)
 
         def test_destroy_success(self):
+            """test destroy"""
             with patch('sys.stdout', SIO()) as SimOut:
                 # Create an instance of Place
                 self.SimIn.onecmd('create Place')

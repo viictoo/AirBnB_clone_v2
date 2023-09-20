@@ -56,7 +56,6 @@ class TestDBStorage(unittest.TestCase):
     def test_add_state_command(self):
         """ Get the initial count of 'states'"""
         initial_count = self.get_state_count()
-
         state = State(name="California")
         self.db_storage.new(state)
         self.db_storage.save()
@@ -96,7 +95,7 @@ class TestDBStorage(unittest.TestCase):
         self.cursor.execute(query)
         final_state = self.cursor.fetchone()[0]
 
-        # Check if al 7 tables were created
+        # Check if all 7 tables were created
         self.assertEqual(final_state - initial_state, 7)
 
 
