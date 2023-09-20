@@ -24,6 +24,6 @@ class test_City(test_basemodel):
         self.assertEqual(type(new.state_id), str)
 
     def test_name(self):
-        """ unittest method """
+        """unittest method """
         new = self.value()
         self.assertEqual(type(new.name), str)

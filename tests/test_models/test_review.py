@@ -13,7 +13,7 @@ class test_review(test_basemodel):
     """unittest method  """
 
     def __init__(self, *args, **kwargs):
-        """ unittest method """
+        """unittest method """
         super().__init__(*args, **kwargs)
         self.name = "Review"
         self.value = Review
@@ -29,6 +29,6 @@ class test_review(test_basemodel):
         self.assertEqual(type(new.user_id), str)
 
     def test_text(self):
-        """unittest method  """
+        """unittest method """
         new = self.value()
         self.assertEqual(type(new.text), str)

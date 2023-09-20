@@ -34,12 +34,12 @@ class TestDBStorage(unittest.TestCase):
         self.db_storage.reload()
 
     def tearDown(self):
-        """ Clean up after each test"""
+        """Clean up after each test"""
         self.cursor.close()
         self.conn.close()
 
     def test_db_docstring(self):
-        """ test for documentation"""
+        """test for documentation"""
         self.assertIsNotNone(DBStorage.__doc__)
 
     def get_state_count(self):
@@ -54,7 +54,7 @@ class TestDBStorage(unittest.TestCase):
         return result
 
     def test_add_state_command(self):
-        """ Get the initial count of 'states'"""
+        """Get the initial count of 'states'"""
         initial_count = self.get_state_count()
         state = State(name="California")
         self.db_storage.new(state)

@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-""" test method"""
+"""test module
+"""
 from tests.test_models.test_base_model import test_basemodel
 from models.place import Place
 import os
@@ -10,7 +11,7 @@ import unittest
     os.getenv("HBNB_TYPE_STORAGE") == 'db',
     "test is not suited for database")
 class test_Place(test_basemodel):
-    """test class """
+    """test class"""
 
     def __init__(self, *args, **kwargs):
         """ unittest method """
@@ -59,7 +60,7 @@ class test_Place(test_basemodel):
         self.assertEqual(type(new.price_by_night), int)
 
     def test_latitude(self):
-        """ unittest method """
+        """unittest method """
         new = self.value()
         self.assertEqual(type(new.latitude), float)
 
