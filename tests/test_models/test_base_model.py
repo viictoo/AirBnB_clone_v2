@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" """
+""" test module """
 from models.base_model import BaseModel
 import unittest
 import datetime
@@ -9,16 +9,16 @@ import os
 
 
 class test_basemodel(unittest.TestCase):
-    """ """
+    """test class """
     if os.getenv('HBNB_TYPE_STORAGE') != 'db':
         def __init__(self, *args, **kwargs):
-            """ """
+            """ initialise tests"""
             super().__init__(*args, **kwargs)
             self.name = 'BaseModel'
             self.value = BaseModel
 
         def setUp(self):
-            """ """
+            """ set up """
             pass
 
         def tearDown(self):
@@ -28,19 +28,19 @@ class test_basemodel(unittest.TestCase):
                 pass
 
         def test_default(self):
-            """ """
+            """ test default"""
             i = self.value()
             self.assertEqual(type(i), self.value)
 
         def test_kwargs(self):
-            """ """
+            """ test kwargs """
             i = self.value()
             copy = i.to_dict()
             new = BaseModel(**copy)
             self.assertFalse(new is i)
 
         def test_kwargs_int(self):
-            """ """
+            """ test kwargs"""
             i = self.value()
             copy = i.to_dict()
             copy.update({1: 2})
@@ -57,13 +57,13 @@ class test_basemodel(unittest.TestCase):
                 self.assertEqual(j[key], i.to_dict())
 
         def test_str(self):
-            """ """
+            """test string  """
             i = self.value()
             self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
                              i.__dict__))
 
         def test_todict(self):
-            """ """
+            """test dict """
             i = self.value()
             n = i.to_dict()
             self.assertEqual(i.to_dict(), n)
@@ -81,17 +81,17 @@ class test_basemodel(unittest.TestCase):
         #         new = self.value(**n)
 
         def test_id(self):
-            """ """
+            """ test id """
             new = self.value()
             self.assertEqual(type(new.id), str)
 
         def test_created_at(self):
-            """ """
+            """ test for created at """
             new = self.value()
             self.assertEqual(type(new.created_at), datetime.datetime)
 
         def test_updated_at(self):
-            """ """
+            """ test for updated at"""
             new = self.value()
             self.assertEqual(type(new.updated_at), datetime.datetime)
             n = new.to_dict()
