@@ -17,6 +17,9 @@ DB_CONFIG = {
 }
 
 
+@unittest.skipIf(
+    os.getenv("HBNB_TYPE_STORAGE") != 'db',
+    "test is not suited for database")
 class TestDBStorage(unittest.TestCase):
 
     def setUp(self):
@@ -32,6 +35,10 @@ class TestDBStorage(unittest.TestCase):
         # Clean up after each test
         self.cursor.close()
         self.conn.close()
+
+    def test_db_docstring(self):
+        """ test for documentation"""
+        self.assertIsNotNone(DBStorage.__doc__)
 
     def get_state_count(self):
         # Get the number of current records in the 'states' table
@@ -70,6 +77,27 @@ class TestDBStorage(unittest.TestCase):
 
         # Check if the difference is +1
         self.assertEqual(updated_count - initial_count, 0)
+
+    def test_all(self):
+        # Get the initial count of 'states'
+
+        place = Place(city_id='001', user_id="0001", name="My_little_house",
+                      number_rooms=4, number_bathrooms=2, max_guest=10,
+                      price_by_night=300, latitude=37.773972,
+                      longitude=-122.431297
+                      )
+        # self.db_storage.new(place)
+        state = State(name="California")
+        self.db_storage.new(state)
+        self.db_storage.save()
+        self.conn.commit()
+
+        # Get the count of 'states' after the command execution
+        dict = self.db_storage.all(State)
+        # print(dict)
+
+        # Check if the all attributes were added
+        self.assertFalse(hasattr(dict, 'id'))
 
     def test_reload_command(self):
         # Get the number of current records in the 'states' table
