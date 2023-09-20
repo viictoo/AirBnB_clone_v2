@@ -3,8 +3,12 @@
 from tests.test_models.test_base_model import test_basemodel
 from models.place import Place
 import os
+import unittest
 
 
+@unittest.skipIf(
+    os.getenv("HBNB_TYPE_STORAGE") == 'db',
+    "test is not suited for database")
 class test_Place(test_basemodel):
     """test class """
 
