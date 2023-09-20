@@ -25,6 +25,7 @@ class test_basemodel(unittest.TestCase):
         pass
 
     def tearDown(self):
+        """tear down"""
         try:
             os.remove('file.json')
         except Exception:
@@ -72,7 +73,7 @@ class test_basemodel(unittest.TestCase):
         self.assertEqual(i.to_dict(), n)
 
     def test_kwargs_none(self):
-        """ """
+        """ test kwargs"""
         n = {None: None}
         with self.assertRaises(TypeError):
             new = self.value(**n)
