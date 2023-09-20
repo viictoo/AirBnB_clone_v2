@@ -11,3 +11,7 @@ class TestConsole(unittest.TestCase):
     def test_console_doc(self):
         """unittest for console docstring"""
         self.assertIsNotNone(console.__doc__)
+
+
+if __name__ == "__main__":
+    unittest.main()

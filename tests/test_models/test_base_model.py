@@ -78,11 +78,11 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = self.value(**n)
 
-    # def test_kwargs_one(self):
-    #     """ """
-    #     n = {'Name': 'test'}
-    #     with self.assertRaises(KeyError):
-    #         new = self.value(**n)
+    def test_kwargs_one(self):
+        """test one kwarg """
+        n = {'Name': 'test'}
+        new = self.value(**n)
+        self.assertEqual(new.Name, n['Name'])
 
     def test_id(self):
         """test id"""

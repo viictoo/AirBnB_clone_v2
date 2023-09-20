@@ -16,19 +16,6 @@ class BaseModel:
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
-    # def __init__(self, *args, **kwargs):
-    #     """Instantiates a new model"""
-    #     self.id = str(uuid.uuid4())
-    #     self.created_at = datetime.now()
-    #     self.updated_at = datetime.now()
-
-    #     if kwargs:
-    #         for key, value in kwargs.items():
-    #             if key == "created_at" or key == "updated_at":
-    #                 value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
-    #             if key == "__class__":
-    #                 del kwargs['__class__']
-    #         self.__dict__.update(kwargs)
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         # if not kwargs:
@@ -54,11 +41,6 @@ class BaseModel:
         """Returns a string representation of the instance"""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
         return '[{}] ({}) {}'.format(cls, self.id, dict(self.__dict__))
-        # instance_dict = dict(self.__dict__)
-        # if '_sa_instance_state' in instance_dict:
-        #     del instance_dict['_sa_instance_state']
-        # return "[{}] ({}) {}".format(
-        #     type(self).__name__, self.id, instance_dict)
 
     def __repr__(self):
         """return a string representaion"""
