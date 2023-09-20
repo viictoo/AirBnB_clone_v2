@@ -88,6 +88,7 @@ class Place(BaseModel, Base):
 
         @property
         def reviews(self):
+            """getter for reviews"""
             from models.__init__ import storage
             from models.amenity import Review
             revs = []
@@ -99,6 +100,7 @@ class Place(BaseModel, Base):
 
         @property
         def amenities(self):
+            """getter for amenities"""
             from models.__init__ import storage
             from models.amenity import Amenity
             amn_list = []
@@ -110,6 +112,7 @@ class Place(BaseModel, Base):
 
         @amenities.setter
         def amenities(self, obj):
+            """setter for amenities"""
             from models.__init__ import storage
             from models.amenity import Amenity
             if (isinstance(obj, storage.all(Amenity))):

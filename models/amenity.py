@@ -9,6 +9,7 @@ from sqlalchemy.orm import relationship
 
 
 class Amenity(BaseModel, Base):
+    """amenity class"""
     __tablename__ = 'amenities'
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         name = Column(
