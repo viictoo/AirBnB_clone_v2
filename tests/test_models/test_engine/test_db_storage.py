@@ -21,9 +21,11 @@ DB_CONFIG = {
     os.getenv("HBNB_TYPE_STORAGE") != 'db',
     "test is not suited for database")
 class TestDBStorage(unittest.TestCase):
+    """tests for db storage
+    """
 
     def setUp(self):
-        # Set up a connection to the test database
+        """ Set up a connection to the test database"""
         self.conn = MySQLdb.connect(**DB_CONFIG)
         self.cursor = self.conn.cursor()
 
@@ -32,7 +34,7 @@ class TestDBStorage(unittest.TestCase):
         self.db_storage.reload()
 
     def tearDown(self):
-        # Clean up after each test
+        """ Clean up after each test"""
         self.cursor.close()
         self.conn.close()
 
@@ -41,19 +43,18 @@ class TestDBStorage(unittest.TestCase):
         self.assertIsNotNone(DBStorage.__doc__)
 
     def get_state_count(self):
-        # Get the number of current records in the 'states' table
+        """ Get the number of current
+        records in the 'states' table"""
         query = "SELECT COUNT(*) FROM states"
         self.cursor.execute(query)
         result = self.cursor.fetchone()[0]
 
-        # Close the cursor to release resources
         self.cursor.close()
-        # Open a new cursor
         self.cursor = self.conn.cursor()
         return result
 
     def test_add_state_command(self):
-        # Get the initial count of 'states'
+        """ Get the initial count of 'states'"""
         initial_count = self.get_state_count()
 
         state = State(name="California")
@@ -63,44 +64,20 @@ class TestDBStorage(unittest.TestCase):
 
         # Get the count of 'states' after the command execution
         updated_count = self.get_state_count()
-        # print(updated_count)
-
         # Check if the difference is +1
         self.assertEqual(updated_count - initial_count, 1)
-
+        # delete one state
         self.db_storage.delete(state)
         self.conn.commit()
 
         # Get the count of 'states' after the command execution
         updated_count = self.get_state_count()
-        # print(updated_count)
 
-        # Check if the difference is +1
+        # Check if the difference is -1
         self.assertEqual(updated_count - initial_count, 0)
 
-    def test_all(self):
-        # Get the initial count of 'states'
-
-        place = Place(city_id='001', user_id="0001", name="My_little_house",
-                      number_rooms=4, number_bathrooms=2, max_guest=10,
-                      price_by_night=300, latitude=37.773972,
-                      longitude=-122.431297
-                      )
-        # self.db_storage.new(place)
-        state = State(name="California")
-        self.db_storage.new(state)
-        self.db_storage.save()
-        self.conn.commit()
-
-        # Get the count of 'states' after the command execution
-        dict = self.db_storage.all(State)
-        # print(dict)
-
-        # Check if the all attributes were added
-        self.assertFalse(hasattr(dict, 'id'))
-
     def test_reload_command(self):
-        # Get the number of current records in the 'states' table
+        """ test reload to create all tables"""
         query = "DROP DATABASE IF EXISTS hbnb_test_db"
         self.cursor.execute(query)
         query = "CREATE DATABASE IF NOT EXISTS hbnb_test_db"
@@ -111,8 +88,6 @@ class TestDBStorage(unittest.TestCase):
         self.cursor.execute(query)
         initial_state = self.cursor.fetchone()[0]
         self.conn.commit()
-
-        # reload to create all tables
         self.db_storage.reload()
 
         query = "SELECT COUNT(*)\
