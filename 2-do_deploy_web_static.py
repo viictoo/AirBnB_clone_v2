@@ -3,7 +3,6 @@
     using the function do_deploy
 """
 from fabric.api import env, hosts, run, put
-from sys import argv
 from os import path
 
 env.hosts = ['34.229.70.213', '3.89.160.146']
@@ -31,16 +30,15 @@ def do_deploy(archive_path):
         arch = arch_tgz.split('.')[0]
         arch_dir = f'/data/web_static/releases/{arch}/'
 
-        run('mkdir -p {}'.format(arch_dir))
-        run('tar -xzf /tmp/{} -C {}'.format(arch_tgz, arch_dir))
-        run('rm /tmp/{}'.format(arch_tgz))
-        run('mv {}web_static/* {}'.format(arch_dir, arch_dir))
-        run('rm -rf /data/web_static/current')
-        run('ln -s {} /data/web_static/current'.format(arch_dir))
+        run('sudo mkdir -p {}'.format(arch_dir))
+        run('sudo tar -xzf /tmp/{} -C {}'.format(arch_tgz, arch_dir))
+        run('sudo rm /tmp/{}'.format(arch_tgz))
+        run('sudo mv {}web_static/* {}'.format(arch_dir, arch_dir))
+        run('sudo rm -rf /data/web_static/current')
+        run('sudo ln -s {} /data/web_static/current'.format(arch_dir))
 
-        print('Donge Innit!')
+        print('New version deployed!')
         return True
 
-    except Exception as e:
-        print(e)
+    except Exception:
         return False
