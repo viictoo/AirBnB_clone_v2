@@ -35,6 +35,7 @@ def do_deploy(archive_path):
         run('tar -xzf /tmp/{} -C {}'.format(arch_tgz, arch_dir))
         run('rm /tmp/{}'.format(arch_tgz))
         run('mv {}web_static/* {}'.format(arch_dir, arch_dir))
+        run('rm -rf {}web_static'.format(arch_dir))
         run('rm -rf /data/web_static/current')
         run('ln -s {} /data/web_static/current'.format(arch_dir))
 
