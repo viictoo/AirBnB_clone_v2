@@ -1,3 +1,4 @@
+# puppet file to setup a web server and add keys
 $filepath = '/etc/nginx/sites-available/hbnb_static'
 $search_str = '/^\tlocation \/ {'
 $err = "\terror_page 404 /404.html;\n\n"
