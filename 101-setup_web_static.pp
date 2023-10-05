@@ -8,7 +8,7 @@ $str="\\\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\tindex
 # Run apt-get update
 exec { 'apt-update':
   command => '/usr/bin/apt-get update',
-  user    => root,
+  path    => '/usr/bin',
 }
 
 # Install Nginx package
@@ -50,18 +50,21 @@ file { '/data/web_static/current':
 
 # Add Nginx configuration
 file { '/etc/nginx/sites-available/hbnb_static':
-  ensure  => present,
-  content => template('your_module/hbnb_static.erb'),
-  notify  => Service['nginx'],
+  ensure => present,
+  notify => Exec['Landing'],
+}
+exec { 'Landing':
+  command => "cp /etc/nginx/sites-available/default ${filepath}",
+  path    => '/usr/bin',
 }
 exec { 'Ngina Redirect Config':
-  command => "sed -i '${search_str}/i \ ${redirect_me}' ${filepath}",
+  command => "sed -i '${search_str}/i\\ ${redirect_me}' ${filepath}",
   path    => '/usr/bin',
   notify  => Service['nginx'],
 
 }
 exec { 'Ngina Error Page Config':
-  command => "sed -i '${search_str}/i \ ${err}' ${filepath}",
+  command => "sed -i '${search_str}/i\\ ${err}' ${filepath}",
   path    => '/usr/bin',
   notify  => Service['nginx'],
 }
