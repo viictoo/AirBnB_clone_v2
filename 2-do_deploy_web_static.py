@@ -5,10 +5,10 @@ using the function do_deploy
 """
 from fabric.api import env, run, put
 from os import path
-
+from fabric.decorators import runs_once
 env.hosts = ['34.229.70.213', '3.89.160.146']
 
-
+@runs_once
 def do_deploy(archive_path):
     """
     Upload the archive to the /tmp/ directory of the web server
@@ -22,7 +22,7 @@ def do_deploy(archive_path):
     /data/web_static/releases/<archive filename without extension>
     True if all operations have been done correctly, otherwise returns False
     """
-    if not path.exists(archive_path):
+    if not path.isfile(archive_path):
         return False
     try:
 
