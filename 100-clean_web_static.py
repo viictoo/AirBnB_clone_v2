@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """deletes out-of-date archives"""
-from fabric.api import local, env, run, task
+from fabric.api import *
 
-env.hosts = ["34.229.70.213", "3.89.160.146"]
+# env.hosts = ["34.229.70.213", "3.89.160.146"]
 
 
 @task
