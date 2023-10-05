@@ -2,8 +2,27 @@ $filepath = '/etc/nginx/sites-available/hbnb_static'
 $search_str = '/^\tlocation \/ {'
 $err = "\terror_page 404 /404.html;\n\n"
 
-$str="\\\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\tindex index.html 0-index.html 0-index.htm;\n\t}"
 
+$str = "server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    add_header X-Served-By ${hostname};
+    root   /var/www/html;
+    index  index.html index.htm;
+
+    location /hbnb_static {
+        alias /data/web_static/current;
+        index index.html 0-index.html;
+    }
+
+    location /redirect_me {
+        return 301 https://www.youtube.com/watch?v=QzOaNHdBq1A;
+    }
+    error_page 404 /404.html;
+    location /404 {
+      root /var/www/html;
+    }
+}"
 
 # Run apt-get update
 exec { 'apt-update':
@@ -50,28 +69,8 @@ file { '/data/web_static/current':
 
 # Add Nginx configuration
 file { '/etc/nginx/sites-available/hbnb_static':
-  ensure => present,
-  notify => Exec['Landing'],
-}
-exec { 'Landing':
-  command => "cp /etc/nginx/sites-available/default ${filepath}",
-  path    => '/usr/bin',
-}
-exec { 'Ngina Redirect Config':
-  command => "sed -i '${search_str}/i\\ ${redirect_me}' ${filepath}",
-  path    => '/usr/bin',
-  notify  => Service['nginx'],
-
-}
-exec { 'Ngina Error Page Config':
-  command => "sed -i '${search_str}/i\\ ${err}' ${filepath}",
-  path    => '/usr/bin',
-  notify  => Service['nginx'],
-}
-exec { 'Ngina redirect':
-  command => "sudo sed -i '/^\tserver_name .*;/a ${str}' ${filepath}",
-  path    => '/usr/bin',
-  notify  => Service['nginx'],
+  ensure  => present,
+  content => str,
 }
 
 # Enable the site
