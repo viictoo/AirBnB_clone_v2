@@ -7,12 +7,12 @@ from os import path
 from datetime import datetime
 from fabric.api import local
 from fabric.api import env, run, put
-from fabric.decorators import runs_once
+from fabric.decorators import runs_once, task
 
 env.hosts = ['34.229.70.213', '3.89.160.146']
 
 
-@runs_once
+@task
 def do_pack():
     """
     All files in the folder web_static must be added to the final archive
@@ -31,6 +31,7 @@ def do_pack():
         return None
 
 
+@task
 def do_deploy(archive_path):
     """
     Upload the archive to the /tmp/ directory of the web server
@@ -69,6 +70,8 @@ def do_deploy(archive_path):
         return False
 
 
+@task
+@runs_once
 def deploy():
     """
     Call the do_pack() function and store the path of the created archive
