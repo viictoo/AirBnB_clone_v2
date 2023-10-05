@@ -107,16 +107,16 @@ def do_clean(number=0):
     # Local directory clean-up
     local_versions_dir = "versions"
     if num in (0, 1):
-        local("cd {} && ls | head -n -1 | xargs rm -rf"
+        local("cd {} && ls -t | head -n -1 | sudo xargs rm -rf"
               .format(local_versions_dir))
     elif num >= 2:
-        local("cd {} && ls | head -n -{} | xargs rm -rf"
+        local("cd {} && ls -t | head -n -{} | sudo xargs rm -rf"
               .format(local_versions_dir, num))
 
     # Remote directory clean-up
     remote_versions_dir = "/data/web_static/releases"
     try:
-        run("cd {} && ls | head -n -{} | xargs rm -rf"
+        run("cd {} && ls -t | head -n -{} | sudo xargs rm -rf"
             .format(remote_versions_dir, num))
-    except Exception as e:
-        return False
+    except Exception:
+        pass
