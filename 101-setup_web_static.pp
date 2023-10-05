@@ -24,29 +24,23 @@ $str = "server {
     }
 }"
 
-# Run apt-get update
-exec { 'apt-update':
-  command => '/usr/bin/apt-get update',
-  path    => '/usr/bin',
+exec { 'update packages':
+command => 'sudo apt-get -y update',
+path    => '/usr/bin:/usr/local/bin',
 }
 
-# Install Nginx package
 package { 'nginx':
-  ensure => installed,
+  ensure  => installed,
 }
 
 # Create directories
 file { '/data/web_static/shared':
   ensure => directory,
-  owner  => 'ubuntu',
-  group  => 'ubuntu',
   mode   => '0755',
 }
 
 file { '/data/web_static/releases/test/':
   ensure => directory,
-  owner  => 'ubuntu',
-  group  => 'ubuntu',
   mode   => '0755',
 }
 
@@ -54,35 +48,16 @@ file { '/data/web_static/releases/test/':
 file { '/data/web_static/releases/test/index.html':
   ensure  => present,
   content => "RIP ME OUT THE PLASTIC I BEEN ACTING BRAND NEW\n",
-  owner   => 'ubuntu',
-  group   => 'ubuntu',
-  mode    => '0644',
-}
-
-# Create a symbolic link
-file { '/data/web_static/current':
-  ensure => link,
-  target => '/data/web_static/releases/test',
-  owner  => 'ubuntu',
-  group  => 'ubuntu',
 }
 
 # Add Nginx configuration
-file { '/etc/nginx/sites-available/hbnb_static':
+file { '/etc/nginx/sites-enabled/hbnb_static':
   ensure  => present,
   content => str,
 }
 
-# Enable the site
-file { '/etc/nginx/sites-enabled/hbnb_static':
-  ensure  => link,
-  target  => '/etc/nginx/sites-available/hbnb_static',
-  require => File['/etc/nginx/sites-available/hbnb_static'],
-}
-
 # Define the Nginx service
-service { 'nginx':
-  ensure  => running,
-  enable  => true,
-  require => File['/etc/nginx/sites-enabled/hbnb_static'],
+exec { 'command':
+  path    => '/usr/bin:/usr/local/bin',
+  command => 'sudo service nginx restart',
 }
