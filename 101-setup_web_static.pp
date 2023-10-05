@@ -1,64 +1,15 @@
-# puppet file to setup a web server and add keys
-$filepath = '/etc/nginx/sites-available/hbnb_static'
-$search_str = '/^\tlocation \/ {'
-$err = "\terror_page 404 /404.html;\n\n"
-
-
-$str = "server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    add_header X-Served-By ${hostname};
-    root   /var/www/html;
-    index  index.html index.htm;
-
-    location /hbnb_static {
-        alias /data/web_static/current;
-        index index.html 0-index.html;
-    }
-
-    location /redirect_me {
-        return 301 https://www.youtube.com/watch?v=QzOaNHdBq1A;
-    }
-    error_page 404 /404.html;
-    location /404 {
-      root /var/www/html;
-    }
-}"
-
-exec { 'update packages':
-command => 'sudo apt-get -y update',
-path    => '/usr/bin:/usr/local/bin',
-}
-
-package { 'nginx':
-  ensure  => installed,
-}
-
-# Create directories
-file { '/data/web_static/shared':
-  ensure => directory,
-  mode   => '0755',
-}
-
-file { '/data/web_static/releases/test/':
-  ensure => directory,
-  mode   => '0755',
-}
-
-# Create and populate index.html
-file { '/data/web_static/releases/test/index.html':
-  ensure  => present,
-  content => "RIP ME OUT THE PLASTIC I BEEN ACTING BRAND NEW\n",
-}
-
-# Add Nginx configuration
-file { '/etc/nginx/sites-enabled/hbnb_static':
-  ensure  => present,
-  content => str,
-}
-
-# Define the Nginx service
+# brute force method
+$str="\\\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\tindex index.html 0-index.html 0-index.htm;\n\t}"
 exec { 'command':
-  path    => '/usr/bin:/usr/local/bin',
-  command => 'sudo service nginx restart',
+command  => "sudo apt-get -y update;
+sudo apt-get -y install -y nginx;
+mkdir -p /data/web_static/shared;
+mkdir -p /data/web_static/releases/test/;
+sudo echo 'RIP ME OUT THE PLASTIC I BEEN ACTING BRAND NEW' | sudo tee /data/web_static/releases/test/index.html;
+sudo ln -nfs /data/web_static/releases/test /data/web_static/current;
+sudo chown -R ubuntu:ubuntu /data;
+sudo sed -i /^\tserver_name .*;/a \\\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\tindex index.html
+0-index.html 0-index.htm;\n\t} /etc/nginx/sites-enabled/default;
+sudo service nginx restart",
+provider => bash,
 }
