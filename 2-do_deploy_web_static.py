@@ -3,41 +3,45 @@
 distributes an archive to your web servers,
 using the function do_deploy
 """
-from fabric.api import *
-from datetime import datetime
-import os
+from fabric.api import env, run, put
+from os import path
 
-env.hosts = ['3.238.28.101', '3.209.82.116']
-env.user = 'ubuntu'
-
-
-# def do_pack():
-#     """ fabric script that generates a .tgz """
-#     date = datetime.now().strftime("%Y%m%d%H%M%S")
-#     path = "versions/web_static_{}.tgz".format(date)
-#     try:
-#         local("mkdir -p versions")
-#         local("tar -czvf {} web_static".format(path))
-#         return path
-#     except Exception:
-#         return None
+env.hosts = ['34.229.70.213', '3.89.160.146']
 
 
 def do_deploy(archive_path):
-    '''use os module to check for valid file path'''
-    if os.path.exists(archive_path):
-        archive = archive_path.split('/')[1]
-        a_path = "/tmp/{}".format(archive)
-        name = archive.split('.')[0]
-        desi = "/data/web_static/releases/{}/".format(name)
+    """
+    Upload the archive to the /tmp/ directory of the web server
+    Uncompress the archive to the folder
+    /data/web_static/releases/<archive filename without extension>
+    on the web server
+    Delete the archive from the web server
+    Delete the symbolic link /data/web_static/current from the web server
+    Create a new the symbolic link /data/web_static/current on the web server,
+    linked to the new version of the code
+    /data/web_static/releases/<archive filename without extension>
+    True if all operations have been done correctly, otherwise returns False
+    """
+    if not path.exists(archive_path):
+        return False
+    try:
 
-        put(archive_path, a_path)
-        run("mkdir -p {}".format(desi))
-        run("tar -xzf {} -C {}".format(a_path, desi))
-        run("rm {}".format(a_path))
-        run("mv -f {}web_static/* {}".format(desi, desi))
-        run("rm -rf {}web_static".format(desi))
-        run("rm -rf /data/web_static/current")
-        run("ln -s {} /data/web_static/current".format(desi))
+        arch_tgz = archive_path.split("/")[-1]
+        arch = arch_tgz.split(".")[0]
+        # arch_dir = "/data/web_static/releases/{}/".format(arch)
+        arch_dir = '/data/web_static/releases/' + arch + '/'
+
+        put(archive_path, "/tmp/")
+        run("sudo mkdir -p {}".format(arch_dir))
+        run("sudo tar -xzf /tmp/{} -C {}".format(arch_tgz, arch_dir))
+        run("sudo rm /tmp/{}".format(arch_tgz))
+        run("sudo mv {}web_static/* {}".format(arch_dir, arch_dir))
+        run("sudo rm -rf {}web_static".format(arch_dir))
+        run("sudo rm -rf /data/web_static/current")
+        run("sudo ln -s {} /data/web_static/current".format(arch_dir))
+
+        print("New version deployed!")
         return True
-    return False
+
+    except Exception:
+        return False
