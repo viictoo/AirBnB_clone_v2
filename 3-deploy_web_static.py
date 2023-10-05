@@ -31,7 +31,6 @@ def do_pack():
         return None
 
 
-@runs_once
 def do_deploy(archive_path):
     """
     Upload the archive to the /tmp/ directory of the web server
