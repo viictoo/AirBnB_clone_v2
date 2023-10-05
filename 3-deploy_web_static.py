@@ -6,8 +6,8 @@ using the function do_deploy
 from os import path
 from datetime import datetime
 from fabric.api import local
-from fabric.api import env, run, put
-from fabric.decorators import runs_once, task
+from fabric.api import env, run, put, runs_once, task
+# from fabric.decorators import runs_once, task
 
 env.hosts = ['34.229.70.213', '3.89.160.146']
 
@@ -82,6 +82,8 @@ def deploy():
     """
     try:
         archive_path = do_pack()
+        if archive_path is None:
+            return False
         ret = do_deploy(archive_path)
         return ret
     except Exception:
