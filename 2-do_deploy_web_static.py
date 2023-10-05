@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-""" distributes an archive to your web servers,
-    using the function do_deploy
+"""
+distributes an archive to your web servers,
+using the function do_deploy
 """
 from fabric.api import env, run, put
 from os import path
@@ -22,7 +23,6 @@ def do_deploy(archive_path):
     True if all operations have been done correctly, otherwise returns False
     """
     if not path.exists(archive_path):
-        print("False")
         return False
     try:
 
@@ -34,7 +34,7 @@ def do_deploy(archive_path):
         run('mkdir -p {}'.format(arch_dir))
         run('tar -xzf /tmp/{} -C {}'.format(arch_tgz, arch_dir))
         run('rm /tmp/{}'.format(arch_tgz))
-        run('mv {}web_static/* {}'.format(arch_dir, arch_dir))
+        run('sudo mv {}web_static/* {}'.format(arch_dir, arch_dir))
         run('rm -rf {}web_static'.format(arch_dir))
         run('rm -rf /data/web_static/current')
         run('ln -s {} /data/web_static/current'.format(arch_dir))
