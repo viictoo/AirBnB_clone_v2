@@ -2,10 +2,11 @@
 """deletes out-of-date archives"""
 from fabric.api import *
 
-# env.hosts = ["34.229.70.213", "3.89.160.146"]
+env.hosts = ["34.229.70.213", "3.89.160.146"]
 
 
 @task
+@runs_once
 def do_clean(number=0):
     """that deletes out-of-date archives
 
