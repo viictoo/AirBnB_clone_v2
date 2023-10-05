@@ -8,6 +8,7 @@ from os import path
 from fabric.decorators import runs_once
 env.hosts = ['34.229.70.213', '3.89.160.146']
 
+
 @runs_once
 def do_deploy(archive_path):
     """
