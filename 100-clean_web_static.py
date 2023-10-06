@@ -85,7 +85,6 @@ def deploy():
         return False
 
 
-@task
 def do_clean(number=0):
     """that deletes out-of-date archives
 
@@ -117,8 +116,14 @@ def do_clean(number=0):
 
     # Remote directory clean-up
     remote_versions_dir = "/data/web_static/releases"
-    try:
+    if num in (0, 1):
+        run("cd {} && ls -t | head -n -1 | sudo xargs rm -rf"
+            .format(remote_versions_dir))
+    elif num >= 2:
         run("cd {} && ls -t | head -n -{} | sudo xargs rm -rf"
             .format(remote_versions_dir, num))
-    except Exception:
-        pass
+    # try:
+    #     run("cd {} && ls -t | head -n -{} | sudo xargs rm -rf"
+    #         .format(remote_versions_dir, num))
+    # except Exception:
+    #     pass
