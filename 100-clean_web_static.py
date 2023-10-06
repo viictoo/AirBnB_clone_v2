@@ -1,10 +1,20 @@
 #!/usr/bin/python3
 """deletes out-of-date archives"""
-from fabric.api import *
 from os import path
 from datetime import datetime
-from fabric.api import local, run
+from fabric.api import local, run, task, env, runs_once
 env.hosts = ["34.229.70.213", "3.89.160.146"]
+
+
+@runs_once
+def do_clean_local(num):
+    local_versions_dir = "versions"
+    if num in (0, 1):
+        local("cd {} && ls -t | head -n -1 | sudo xargs rm -rf"
+              .format(local_versions_dir))
+    elif num >= 2:
+        local("cd {} && ls -t | head -n -{} | sudo xargs rm -rf"
+              .format(local_versions_dir, num))
 
 
 @task
@@ -29,26 +39,16 @@ def do_clean(number=0):
         return False
 
     # Local directory clean-up
-    try:
-        local_versions_dir = "versions"
-        if num in (0, 1):
-            local("cd {} && ls -t | head -n -1 | sudo xargs rm -rf"
-                  .format(local_versions_dir))
-        elif num >= 2:
-            local("cd {} && ls -t | head -n -{} | sudo xargs rm -rf"
-                  .format(local_versions_dir, num))
+    do_clean_local(num)
+    # Remote directory clean-up
+    remote_versions_dir = "/data/web_static/releases"
+    if num in (0, 1):
+        run("cd {} && ls -t | head -n -1 | sudo xargs rm -rf"
+            .format(remote_versions_dir))
+    elif num >= 2:
+        run("cd {} && ls -t | head -n -{} | sudo xargs rm -rf"
+            .format(remote_versions_dir, num))
 
-        # Remote directory clean-up
-        remote_versions_dir = "/data/web_static/releases"
-        if num in (0, 1):
-            run("cd {} && ls -t | head -n -1 | sudo xargs rm -rf"
-                .format(remote_versions_dir))
-        elif num >= 2:
-            run("cd {} && ls -t | head -n -{} | sudo xargs rm -rf"
-                .format(remote_versions_dir, num))
-        return True
-    except Exception:
-        return False
     # try:
     #     run("cd {} && ls -t | head -n -{} | sudo xargs rm -rf"
     #         .format(remote_versions_dir, num))
