@@ -117,7 +117,8 @@ def do_clean(number=0):
 
     # Remote directory clean-up
     remote_versions_dir = "/data/web_static/releases/*"
-    run("ls -dt {} | head -n -{} | xargs rm -fr".format(remote_versions_dir, num))
+    run("ls -dt {} | head -n -{} | xargs rm -fr"
+        .format(remote_versions_dir, num))
     # if num in (0, 1):
     #     run("cd {} && ls -t | head -n -1 | sudo xargs rm -rf"
     #         .format(remote_versions_dir))
