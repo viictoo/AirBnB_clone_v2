@@ -85,6 +85,7 @@ def deploy():
         return False
 
 
+@task
 def do_clean(number=0):
     """that deletes out-of-date archives
 
