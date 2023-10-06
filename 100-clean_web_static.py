@@ -3,7 +3,7 @@
 from fabric.api import *
 from os import path
 from datetime import datetime
-from fabric.api import local
+from fabric.api import local, run
 env.hosts = ["34.229.70.213", "3.89.160.146"]
 
 
@@ -46,6 +46,7 @@ def do_clean(number=0):
         elif num >= 2:
             run("cd {} && ls -t | head -n -{} | sudo xargs rm -rf"
                 .format(remote_versions_dir, num))
+        return True
     except Exception:
         return False
     # try:
