@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """deletes out-of-date archives"""
+from fabric.decorators import task
 from fabric.api import *
 from os import path
 from datetime import datetime
-from fabric.api import local
 env.hosts = ["34.229.70.213", "3.89.160.146"]
 
 
@@ -66,7 +66,6 @@ def do_deploy(archive_path):
 
 
 @task
-@runs_once
 def deploy():
     """
     Call the do_pack() function and store the path of the created archive
@@ -79,8 +78,7 @@ def deploy():
         archive_path = do_pack()
         if archive_path is None:
             return False
-        ret = do_deploy(archive_path)
-        return ret
+        return do_deploy(archive_path)
     except Exception:
         return False
 
@@ -97,14 +95,11 @@ def do_clean(number=0):
         if number is 2, keep the most recent,
         and second most recent versions of your archive
     """
-
+    num = 1
     try:
         num = int(number)
     except ValueError:
-        return False
-
-    if num < 0:
-        return False
+        pass
 
     # Local directory clean-up
     local_versions_dir = "versions"
