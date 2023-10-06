@@ -2,7 +2,7 @@
 
 exec { 'command':
 command  => "sudo apt-get -y update;
-sudo apt-get -y install -y nginx;
+sudo apt-get -y install nginx;
 mkdir -p /data/web_static/shared;
 mkdir -p /data/web_static/releases/test/;
 sudo echo 'RIP ME OUT THE PLASTIC I BEEN ACTING BRAND NEW' | sudo tee /data/web_static/releases/test/index.html;
