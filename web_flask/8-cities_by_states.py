@@ -19,7 +19,7 @@ def cities_by_states():
 
 
 @app.teardown_appcontext
-def teardown(self):
+def teardown(exception):
     """close session
     """
     storage.close()
