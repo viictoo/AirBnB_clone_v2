@@ -19,9 +19,11 @@ def states():
 
 
 @app.route('/states/<id>', strict_slashes=False)
-def states_by_id(id):
+def states_by_id(id=None):
     """display states from storage"""
     states = storage.all(State).values()
+    if id is None:
+        return render_template("9-states.html", state=state)
     state = None
     for ids in states:
         if ids.id == id:
