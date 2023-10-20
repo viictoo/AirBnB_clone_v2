@@ -27,7 +27,7 @@ def states(id=None):
 
 
 @app.teardown_appcontext
-def teardown(self):
+def teardown(exception):
     """close session
     """
     storage.close()
