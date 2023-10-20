@@ -2,14 +2,16 @@
 """
 distributes an archive to your web servers,
 using the function do_deploy
+fab -f 3-deploy_web_static.py deploy -i my_ssh_private_key -u ubuntu
 """
 from fabric.api import env, run, put
 from os import path
 from fabric.decorators import runs_once
 env.hosts = ['34.229.70.213', '3.89.160.146']
+# env.hosts = ['0']
 
 
-@runs_once
+# @runs_once
 def do_deploy(archive_path):
     """
     Upload the archive to the /tmp/ directory of the web server

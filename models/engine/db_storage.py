@@ -43,12 +43,18 @@ class DBStorage:
                     value = object
         """
         if cls:
-            try:
-                return {'{}.{}'.format(type(obj).__name__, obj.id): obj
-                        for obj in self.__session.query(eval(cls)).all()
-                        if eval(cls).__name__ == type(obj).__name__}
-            except Exception:
-                return {}
+            # try:
+            #     return {'{}.{}'.format(type(obj).__name__, obj.id): obj
+            #             for obj in self.__session.query(eval(cls)).all()
+            #             if eval(cls).__name__ == type(obj).__name__}
+            # except Exception:
+            #     return {}
+            objects = {}
+            query = self.__session.query(cls)
+            for obj in query.all():
+                obj_key = '{}.{}'.format(obj.__class__.__name__, obj.id)
+                objects[obj_key] = obj
+            return objects
         else:
             list_all = []
             for class_ in self.all_classes:
@@ -87,3 +93,5 @@ class DBStorage:
         """close the transactional resources
         """
         self.__session.close()
+        # self.Session.close()
+        # self.__session.remove()

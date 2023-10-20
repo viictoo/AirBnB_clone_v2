@@ -20,6 +20,7 @@ class State(BaseModel, Base):
     else:
         name = ""
 
+    if os.getenv('HBNB_TYPE_STORAGE') != 'db':
         @property
         def cities(self):
             """getter for cities related to state"""
@@ -27,7 +28,7 @@ class State(BaseModel, Base):
             # from models.city import City
             cit_list = []
             city_stor = models.storage.all(City)
-            for c in city_stor:
-                if self.id == c.state_id:
-                    cit_list.append(c)
+            for c, val in city_stor.items():
+                if self.id == val.state_id:
+                    cit_list.append(val)
             return cit_list
