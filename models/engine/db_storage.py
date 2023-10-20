@@ -45,14 +45,14 @@ class DBStorage:
         new_dict = {}
         if cls:
             if type(cls) == str:
-                cls = classes[cls]
+                cls = self.all_classes[cls]
 
             objs = self.__session.query(cls).all()
             for obj in objs:
                 key = obj.__class__.__name__ + "." + obj.id
                 new_dict[key] = obj
         else:
-            for clas in classes.values():
+            for clas in self.all_classes.values():
                 objs = self.__session.query(clas).all()
 
                 for obj in objs:
