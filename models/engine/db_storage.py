@@ -42,26 +42,24 @@ class DBStorage:
         dictionary: key = <class-name>.<object-id>
                     value = object
         """
+        new_dict = {}
         if cls:
-            # try:
-            #     return {'{}.{}'.format(type(obj).__name__, obj.id): obj
-            #             for obj in self.__session.query(eval(cls)).all()
-            #             if eval(cls).__name__ == type(obj).__name__}
-            # except Exception:
-            #     return {}
-            objects = {}
-            query = self.__session.query(cls)
-            for obj in query.all():
-                obj_key = '{}.{}'.format(obj.__class__.__name__, obj.id)
-                objects[obj_key] = obj
-            return objects
+            if type(cls) == str:
+                cls = classes[cls]
+
+            objs = self.__session.query(cls).all()
+            for obj in objs:
+                key = obj.__class__.__name__ + "." + obj.id
+                new_dict[key] = obj
         else:
-            list_all = []
-            for class_ in self.all_classes:
-                for item in self.__session.query(eval(class_)).all():
-                    list_all.append(item)
-            return {'{}.{}'.format(type(obj).__name__, obj.id): obj
-                    for obj in list_all}
+            for clas in classes.values():
+                objs = self.__session.query(clas).all()
+
+                for obj in objs:
+                    key = obj.__class__.__name__ + "." + obj.id
+                    new_dict[key] = obj
+
+        return new_dict
 
     def new(self, obj):
         """add the object to the current database session (self.__session)
