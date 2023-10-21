@@ -1,9 +1,10 @@
 .places {
 	display: flex;
 	justify-content: center;
+	align-items: flex-start;
 	flex-wrap: wrap;
 	margin: 45px auto;
-	text-align: center;
+	/* text-align: center; */
 }
 
 article {
@@ -29,7 +30,7 @@ article {
 	flex-direction: row;
 	position: relative;
 
-	height: 80px;	
+	height: 80px;
 	width: 100%;
 }
 
@@ -74,7 +75,7 @@ article {
 
 .user {
 	margin-top: 5px;
-	margin-bottom: 5px;	
+	margin-bottom: 5px;
 }
 
 .description {
@@ -96,6 +97,9 @@ article h2 {
 	font-size: 30px;
 	margin: 10px auto;
 	padding: 0px;
+	padding-right: 50px;
+	text-align: left;
+	height:fit-content;
 }
 
 .guest_icon {
