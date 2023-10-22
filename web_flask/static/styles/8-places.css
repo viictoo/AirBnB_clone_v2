@@ -29,17 +29,18 @@ article {
 	display: flex;
 	flex-direction: row;
 	position: relative;
+	height: fit-content;
 
-	height: 80px;
+	min-height: 80px;
 	width: 100%;
 }
 
 .price_by_night {
 	display: flex;
 	justify-content: center;
-	align-self: flex-end;
+	align-self: flex-start;
 
-	position: absolute;
+	position: relative;
 	right: 0;
 
 	line-height: 60px;
@@ -97,7 +98,6 @@ article h2 {
 	font-size: 30px;
 	margin: 10px auto;
 	padding: 0px;
-	padding-right: 50px;
 	text-align: left;
 	height:fit-content;
 }
