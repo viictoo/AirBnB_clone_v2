@@ -13,7 +13,7 @@
         </ul>
         {% elif state is defined %}
         {% if state == None %}
-            <h1>&nbsp;</h1>
+            <h1>Not found!</h1>
             {% else %}
             <h1>State: {{ state.name }}</h1>
             <h3>Cities:</h3>
@@ -25,7 +25,7 @@
 
         {% endif %}
     {% else %}
-    <h1>Not found!</h1>
+    <h1>&nbsp;</h1>
     {% endif %}
   </body>
 </html>
